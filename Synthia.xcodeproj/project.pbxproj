@@ -1,0 +1,333 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		421DFF2B1C93F0E60092A374 /* pack-2 in Resources */ = {isa = PBXBuildFile; fileRef = 421DFF2A1C93F0E60092A374 /* pack-2 */; };
+		421DFF2D1C93F0ED0092A374 /* pack-3 in Resources */ = {isa = PBXBuildFile; fileRef = 421DFF2C1C93F0ED0092A374 /* pack-3 */; };
+		421DFF2F1C9407F00092A374 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421DFF2E1C9407F00092A374 /* ContainerController.swift */; };
+		422F02441C4B6A0300292216 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422F02431C4B6A0300292216 /* AudioEngine.swift */; };
+		423ADF621C4A147100A88A3C /* SynthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423ADF601C4A126B00A88A3C /* SynthViewController.swift */; };
+		426B93C41C93BD6500E801D2 /* pack-0 in Resources */ = {isa = PBXBuildFile; fileRef = 426B93C31C93BD6500E801D2 /* pack-0 */; };
+		426B93C61C93BE2B00E801D2 /* pack-1 in Resources */ = {isa = PBXBuildFile; fileRef = 426B93C51C93BE2B00E801D2 /* pack-1 */; };
+		428006991C8CABCD00B7D524 /* SequencerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428006981C8CABCD00B7D524 /* SequencerViewController.swift */; };
+		4287E6531C49F94500B81E4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4287E6521C49F94500B81E4C /* AppDelegate.swift */; };
+		4287E65A1C49F94500B81E4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4287E6591C49F94500B81E4C /* Assets.xcassets */; };
+		4287E65D1C49F94500B81E4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4287E65B1C49F94500B81E4C /* LaunchScreen.storyboard */; };
+		4291FE6B1C4AFB64004EEFEA /* Voice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4291FE6A1C4AFB64004EEFEA /* Voice.swift */; };
+		42BF0C591CA3AF60002ADC33 /* PadHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0C581CA3AF60002ADC33 /* PadHandler.swift */; };
+		42D59E451D2208EC00904A3B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4287E65E1C49F94500B81E4C /* Info.plist */; };
+		B237E8F21C9215FE00903C6F /* DrumSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B237E8F11C9215FE00903C6F /* DrumSample.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		421DFF2A1C93F0E60092A374 /* pack-2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pack-2"; sourceTree = "<group>"; };
+		421DFF2C1C93F0ED0092A374 /* pack-3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pack-3"; sourceTree = "<group>"; };
+		421DFF2E1C9407F00092A374 /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		422F02431C4B6A0300292216 /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		423ADF601C4A126B00A88A3C /* SynthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynthViewController.swift; sourceTree = "<group>"; };
+		426B93C31C93BD6500E801D2 /* pack-0 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pack-0"; sourceTree = "<group>"; };
+		426B93C51C93BE2B00E801D2 /* pack-1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pack-1"; sourceTree = "<group>"; };
+		428006981C8CABCD00B7D524 /* SequencerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencerViewController.swift; sourceTree = "<group>"; };
+		4287E64F1C49F94500B81E4C /* Synthia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Synthia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4287E6521C49F94500B81E4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4287E6591C49F94500B81E4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4287E65C1C49F94500B81E4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4287E65E1C49F94500B81E4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/joshua/code/Synthia/Synthia/Info.plist; sourceTree = "<absolute>"; };
+		4291FE6A1C4AFB64004EEFEA /* Voice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Voice.swift; sourceTree = "<group>"; };
+		42BF0C581CA3AF60002ADC33 /* PadHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadHandler.swift; sourceTree = "<group>"; };
+		B237E8F11C9215FE00903C6F /* DrumSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrumSample.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4287E64C1C49F94500B81E4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4287E6461C49F94500B81E4C = {
+			isa = PBXGroup;
+			children = (
+				421DFF2C1C93F0ED0092A374 /* pack-3 */,
+				421DFF2A1C93F0E60092A374 /* pack-2 */,
+				426B93C51C93BE2B00E801D2 /* pack-1 */,
+				426B93C31C93BD6500E801D2 /* pack-0 */,
+				4287E6511C49F94500B81E4C /* Synthia */,
+				4287E6501C49F94500B81E4C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4287E6501C49F94500B81E4C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4287E64F1C49F94500B81E4C /* Synthia.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4287E6511C49F94500B81E4C /* Synthia */ = {
+			isa = PBXGroup;
+			children = (
+				4287E6521C49F94500B81E4C /* AppDelegate.swift */,
+				423ADF601C4A126B00A88A3C /* SynthViewController.swift */,
+				42BF0C581CA3AF60002ADC33 /* PadHandler.swift */,
+				4287E6591C49F94500B81E4C /* Assets.xcassets */,
+				4287E65B1C49F94500B81E4C /* LaunchScreen.storyboard */,
+				4287E65E1C49F94500B81E4C /* Info.plist */,
+				4291FE6A1C4AFB64004EEFEA /* Voice.swift */,
+				422F02431C4B6A0300292216 /* AudioEngine.swift */,
+				428006981C8CABCD00B7D524 /* SequencerViewController.swift */,
+				B237E8F11C9215FE00903C6F /* DrumSample.swift */,
+				421DFF2E1C9407F00092A374 /* ContainerController.swift */,
+			);
+			path = Synthia;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4287E64E1C49F94500B81E4C /* Synthia */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4287E6771C49F94600B81E4C /* Build configuration list for PBXNativeTarget "Synthia" */;
+			buildPhases = (
+				4287E64B1C49F94500B81E4C /* Sources */,
+				4287E64C1C49F94500B81E4C /* Frameworks */,
+				4287E64D1C49F94500B81E4C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Synthia;
+			productName = Synthia;
+			productReference = 4287E64F1C49F94500B81E4C /* Synthia.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4287E6471C49F94500B81E4C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Joshua Escribano";
+				TargetAttributes = {
+					4287E64E1C49F94500B81E4C = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = GFSP92A3FB;
+					};
+				};
+			};
+			buildConfigurationList = 4287E64A1C49F94500B81E4C /* Build configuration list for PBXProject "Synthia" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4287E6461C49F94500B81E4C;
+			productRefGroup = 4287E6501C49F94500B81E4C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4287E64E1C49F94500B81E4C /* Synthia */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4287E64D1C49F94500B81E4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				421DFF2D1C93F0ED0092A374 /* pack-3 in Resources */,
+				421DFF2B1C93F0E60092A374 /* pack-2 in Resources */,
+				426B93C61C93BE2B00E801D2 /* pack-1 in Resources */,
+				4287E65D1C49F94500B81E4C /* LaunchScreen.storyboard in Resources */,
+				4287E65A1C49F94500B81E4C /* Assets.xcassets in Resources */,
+				426B93C41C93BD6500E801D2 /* pack-0 in Resources */,
+				42D59E451D2208EC00904A3B /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4287E64B1C49F94500B81E4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				422F02441C4B6A0300292216 /* AudioEngine.swift in Sources */,
+				423ADF621C4A147100A88A3C /* SynthViewController.swift in Sources */,
+				4291FE6B1C4AFB64004EEFEA /* Voice.swift in Sources */,
+				B237E8F21C9215FE00903C6F /* DrumSample.swift in Sources */,
+				421DFF2F1C9407F00092A374 /* ContainerController.swift in Sources */,
+				4287E6531C49F94500B81E4C /* AppDelegate.swift in Sources */,
+				42BF0C591CA3AF60002ADC33 /* PadHandler.swift in Sources */,
+				428006991C8CABCD00B7D524 /* SequencerViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		4287E65B1C49F94500B81E4C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4287E65C1C49F94500B81E4C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4287E6751C49F94600B81E4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		4287E6761C49F94600B81E4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4287E6781C49F94600B81E4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Synthia/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.joshua.synthia;
+				PRODUCT_NAME = Synthia;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4287E6791C49F94600B81E4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Synthia/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.joshua.synthia;
+				PRODUCT_NAME = Synthia;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4287E64A1C49F94500B81E4C /* Build configuration list for PBXProject "Synthia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4287E6751C49F94600B81E4C /* Debug */,
+				4287E6761C49F94600B81E4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4287E6771C49F94600B81E4C /* Build configuration list for PBXNativeTarget "Synthia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4287E6781C49F94600B81E4C /* Debug */,
+				4287E6791C49F94600B81E4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4287E6471C49F94500B81E4C /* Project object */;
+}
