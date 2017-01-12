@@ -18,19 +18,19 @@ class DrumSample {
     
     init(sampleIndex: Int) {
         self.sampleIndex = sampleIndex
-        let samplePath = NSBundle.mainBundle().pathForResource("sample-" + String(sampleIndex), ofType: "wav", inDirectory: "pack-0")
-        let sampleFileUrl = NSURL(string: samplePath!)
+        let samplePath = Bundle.main.path(forResource: "sample-" + String(sampleIndex), ofType: "wav", inDirectory: "pack-0")
+        let sampleFileUrl = URL(string: samplePath!)
         do {
             sampleFile = try AVAudioFile(forReading: sampleFileUrl!)
         } catch {}
     }
     
-    func changeSamplePack(packIndex: Int) {
-        if playerNode.playing {
+    func changeSamplePack(_ packIndex: Int) {
+        if playerNode.isPlaying {
             playerNode.stop()
         }
-        let samplePath = NSBundle.mainBundle().pathForResource("sample-" + String(sampleIndex!), ofType: "wav", inDirectory: "pack-" + String(packIndex))
-        let sampleFileUrl = NSURL(string: samplePath!)
+        let samplePath = Bundle.main.path(forResource: "sample-" + String(sampleIndex!), ofType: "wav", inDirectory: "pack-" + String(packIndex))
+        let sampleFileUrl = URL(string: samplePath!)
         do {
             sampleFile = try AVAudioFile(forReading: sampleFileUrl!)
         } catch {}
@@ -41,7 +41,7 @@ class DrumSample {
             playerNode.stop()
         }
         hasCompletedPlayback = false
-        playerNode.scheduleFile(sampleFile!, atTime: nil, completionHandler: {
+        playerNode.scheduleFile(sampleFile!, at: nil, completionHandler: {
             self.hasCompletedPlayback = true
         })
         playerNode.play()

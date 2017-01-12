@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-func touchesInView(touches: Set<UITouch>, view: UIView) -> Set<UITouch> {
+func touchesInView(_ touches: Set<UITouch>, view: UIView) -> Set<UITouch> {
     var touchesInView = Set<UITouch>()
     for touch in touches {
-        let location = touch.locationInView(nil)
-        let viewRect = view.convertRect(view.bounds, toView: nil)
+        let location = touch.location(in: nil)
+        let viewRect = view.convert(view.bounds, to: nil)
 
-        if CGRectContainsPoint(viewRect, location) {
+        if viewRect.contains(location) {
             touchesInView.insert(touch)
         }
     }
@@ -53,8 +53,8 @@ class PadHandler {
         }
     }
     
-    func processTouchesBegan(touches: Set<UITouch>) {
-        for (i, padLabel) in padLabels.enumerate() {
+    func processTouchesBegan(_ touches: Set<UITouch>) {
+        for (i, padLabel) in padLabels.enumerated() {
             let touchesInPad = touchesInView(touches, view: padLabel)
             if touchesInPad.count > 0 {
                 if !pads[i].isOn {
@@ -69,12 +69,12 @@ class PadHandler {
         }
     }
     
-    func processTouchesMoved(touches: Set<UITouch>) {
-        for (i, padLabel) in padLabels.enumerate() {
+    func processTouchesMoved(_ touches: Set<UITouch>) {
+        for (i, padLabel) in padLabels.enumerated() {
             let touchesInPad = touchesInView(touches, view: padLabel)
-            let padTouchesIntersect = pads[i].touches.intersect(touches)
+            let padTouchesIntersect = pads[i].touches.intersection(touches)
             if !padTouchesIntersect.isEmpty {
-                let remainingTouchesInPad = padTouchesIntersect.intersect(touchesInPad)
+                let remainingTouchesInPad = padTouchesIntersect.intersection(touchesInPad)
                 if remainingTouchesInPad.isEmpty {
                     turnOffPad(i)
                 } else {
@@ -95,9 +95,9 @@ class PadHandler {
         }
     }
     
-    func processTouchesEnded(touches: Set<UITouch>) {
-        for (i, _) in padLabels.enumerate() {
-            for touch in pads[i].touches.intersect(touches) {
+    func processTouchesEnded(_ touches: Set<UITouch>) {
+        for (i, _) in padLabels.enumerated() {
+            for touch in pads[i].touches.intersection(touches) {
                 pads[i].touches.remove(touch)
             }
             if pads[i].touches.isEmpty {
@@ -108,27 +108,27 @@ class PadHandler {
         }
     }
     
-    func turnOnPad(index: Int) {
+    func turnOnPad(_ index: Int) {
         padLabels[index].backgroundColor = padOnColor
         audioEngine!.voiceArray[index].start(index)
     }
     
-    func turnOffPad(index: Int) {
+    func turnOffPad(_ index: Int) {
         pads[index].isOn = false
-        pads[index].touches.removeAll(keepCapacity: false)
+        pads[index].touches.removeAll(keepingCapacity: false)
         padLabels[index].backgroundColor = padOffColor
         audioEngine!.voiceArray[index].stop()
     }
     
-    func updatePadTouchLocation(index: Int) {
+    func updatePadTouchLocation(_ index: Int) {
         var touch: UITouch?
         if pads[index].touches.count == 1 {
             touch = pads[index].touches.first
         }
-        touch = pads[index].touches.sort({ (t1: UITouch, t2: UITouch)  -> Bool in
-            return t1.locationInView(nil).y > t2.locationInView(nil).y
+        touch = pads[index].touches.sorted(by: { (t1: UITouch, t2: UITouch)  -> Bool in
+            return t1.location(in: nil).y > t2.location(in: nil).y
         }).first!
-        let locationRatio = Float(touch!.locationInView(padLabels[index]).y/padLabels[index].frame.height)
+        let locationRatio = Float(touch!.location(in: padLabels[index]).y/padLabels[index].frame.height)
         audioEngine!.voiceArray[index].calculateWaveRatios(locationRatio)
     }
     

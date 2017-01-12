@@ -125,6 +125,7 @@
 					4287E64E1C49F94500B81E4C = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = GFSP92A3FB;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -287,6 +288,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshua.synthia;
 				PRODUCT_NAME = Synthia;
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -302,6 +304,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshua.synthia;
 				PRODUCT_NAME = Synthia;
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

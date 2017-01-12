@@ -20,7 +20,7 @@ class ContainerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let rect = UIScreen.mainScreen().bounds
+        let rect = UIScreen.main.bounds
         scrollView = UIScrollView(frame: rect)
         scrollView.contentSize = CGSize(width: rect.width, height: rect.height)
         view.addSubview(scrollView)
@@ -29,13 +29,13 @@ class ContainerController: UIViewController {
         addChildViewController(synthController)
         synthController.view.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
         scrollView.addSubview(synthController.view)
-        synthController.didMoveToParentViewController(self)
+        synthController.didMove(toParentViewController: self)
         
         sequencerController.delegate = self
         addChildViewController(sequencerController)
         sequencerController.view.frame = CGRect(x: rect.width, y: 0, width: rect.width, height: rect.height)
         scrollView.addSubview(sequencerController.view)
-        sequencerController.didMoveToParentViewController(self)
+        sequencerController.didMove(toParentViewController: self)
     }
     
     func pageWantsPageChange() {
@@ -44,12 +44,12 @@ class ContainerController: UIViewController {
         self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.page) * width, y: 0), animated: false)
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
-    override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent?) {
-        if motion == UIEventSubtype.MotionShake {
+    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == UIEventSubtype.motionShake {
             synthController.fxSlider!.value = 0
             synthController.fxStepper!.value = 0
             synthController.fxSlider!.thumbTintColor = delayTimeSliderThumbColor
@@ -58,7 +58,7 @@ class ContainerController: UIViewController {
             synthController.audioEngine!.stopVoices()
             synthController.padHandler!.clear()
             
-            if motion == UIEventSubtype.MotionShake {
+            if motion == UIEventSubtype.motionShake {
                 sequencerController.stopPlayback()
                 for colBtn in sequencerController.drumButtons {
                     for btn in colBtn {

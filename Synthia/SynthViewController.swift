@@ -10,11 +10,11 @@ let recordOnColor = UIColor(red: 0.99, green: 0.31, blue: 0.30, alpha: 1)
 let recordOffColor = UIColor(red: 0.99, green: 0.48, blue: 0.47, alpha: 1)
 let shareButtoncolor = UIColor(red: 0.19, green: 0.43, blue: 0.07, alpha: 1)
 let octaveStepperColor = UIColor(red: 0.82, green: 0.63, blue: 0.55, alpha: 1)
-let octaveStepperBgColor = UIColor.blackColor()
+let octaveStepperBgColor = UIColor.black
 let keyStepperColor = UIColor(red: 0.82, green: 0.63, blue: 0.55, alpha: 1)
-let keyStepperBgColor = UIColor.blackColor()
+let keyStepperBgColor = UIColor.black
 let fxStepperColor = UIColor(red: 0.82, green: 0.63, blue: 0.55, alpha: 1)
-let fxStepperBgColor = UIColor.blackColor()
+let fxStepperBgColor = UIColor.black
 let fxSliderTintColor = UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1)
 var fxSliderThumbColor = UIColor(red: 1, green: 0.90, blue: 0.61, alpha: 1)
 let delayTimeSliderThumbColor = UIColor(red: 1, green: 0.90, blue: 0.61, alpha: 1)
@@ -29,11 +29,11 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     weak var delegate: ContainerController?
     let possibleNotes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
     let fxTypes = [FXType.DelayTime, FXType.DelayWetness, FXType.ReverbWetness, FXType.DistortionWetness, FXType.CutOffFrequency]
-    let backgroundView = UIView(frame: UIScreen.mainScreen().bounds)
-    let helpBackgroundView = UIView(frame: UIScreen.mainScreen().bounds)
-    let screenWidth = UIScreen.mainScreen().bounds.width
-    let screenHeight = UIScreen.mainScreen().bounds.height
-    let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Dark))
+    let backgroundView = UIView(frame: UIScreen.main.bounds)
+    let helpBackgroundView = UIView(frame: UIScreen.main.bounds)
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
+    let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.dark))
     var padHandler: PadHandler?
     var audioEngine: AudioEngine?
     var noteLabelsContainer: UILabel?
@@ -41,13 +41,13 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     var shakeInstructionLabel: UILabel?
     var keyLabel: UILabel?
     var keyChangeLabel: UILabel?
-    var keyChangeTimer: NSTimer?
+    var keyChangeTimer: Timer?
     var octaveLabel: UILabel?
     var octaveChangeLabel: UILabel?
-    var octaveChangeTimer: NSTimer?
+    var octaveChangeTimer: Timer?
     var fxTypeLabel: UILabel?
     var fxTypeChangeLabel: UILabel?
-    var fxTypeChangeTimer: NSTimer?
+    var fxTypeChangeTimer: Timer?
     var fxValueLabel: UILabel?
     var keyStepper: UIStepper?
     var octaveStepper: UIStepper?
@@ -58,7 +58,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     var startPlaybackButton: UIButton?
     var fxSlider: UISlider?
     var instructionLabel: UILabel?
-    var padToTouches = [Int: [UITouch]]?()
+    var padToTouches = [Int: [UITouch]]()
     var recording = false
     var helpMode = false
     var isPlaying = false
@@ -70,20 +70,20 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         let widthOfPad = Int(ceil(Double(Int(screenWidth) - 2 * numberOfPads + 2) / Double(numberOfPads)))
         let heightOfPad = Int(screenHeight - 42)
-        backgroundView.backgroundColor = UIColor.blackColor()
-        backgroundView.multipleTouchEnabled = true
+        backgroundView.backgroundColor = UIColor.black
+        backgroundView.isMultipleTouchEnabled = true
         view.addSubview(backgroundView)
         
         noteLabelsContainer = UILabel(frame: CGRect(x: 0, y: 55, width: Int(screenWidth), height: heightOfPad))
         noteLabelsContainer!.backgroundColor = noteLabelContainerColor
-        noteLabelsContainer!.multipleTouchEnabled = true
-        noteLabelsContainer!.userInteractionEnabled = true
+        noteLabelsContainer!.isMultipleTouchEnabled = true
+        noteLabelsContainer!.isUserInteractionEnabled = true
         backgroundView.addSubview(noteLabelsContainer!)
         var padLabels = [UILabel]()
         for i in 0...(numberOfPads - 1) {
             let pad = UILabel(frame: CGRect(x: (widthOfPad + 1) * i, y: 55, width: widthOfPad, height: heightOfPad))
             pad.backgroundColor = padOffColor
-            pad.multipleTouchEnabled = true
+            pad.isMultipleTouchEnabled = true
             padLabels.append(pad);
             backgroundView.addSubview(pad)
         }
@@ -101,7 +101,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         octaveStepper!.wraps = true
         octaveStepper!.backgroundColor = octaveStepperBgColor
         octaveStepper!.tintColor = octaveStepperColor
-        octaveStepper!.addTarget(self, action: #selector(SynthViewController.changeOctave), forControlEvents: UIControlEvents.ValueChanged)
+        octaveStepper!.addTarget(self, action: #selector(SynthViewController.changeOctave), for: UIControlEvents.valueChanged)
         toolbarView.addSubview(octaveStepper!)
         
         // Add Key Stepper
@@ -113,7 +113,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         keyStepper!.wraps = true
         keyStepper!.backgroundColor = keyStepperBgColor
         keyStepper!.tintColor = keyStepperColor
-        keyStepper!.addTarget(self, action: #selector(SynthViewController.changeKey), forControlEvents: UIControlEvents.ValueChanged)
+        keyStepper!.addTarget(self, action: #selector(SynthViewController.changeKey), for: UIControlEvents.valueChanged)
         let key = possibleNotes[Int(keyStepper!.value)]
         toolbarView.addSubview(keyStepper!)
         
@@ -126,7 +126,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         fxStepper!.wraps = true
         fxStepper!.backgroundColor = fxStepperBgColor
         fxStepper!.tintColor = fxStepperColor
-        fxStepper!.addTarget(self, action: #selector(SynthViewController.changeFX), forControlEvents: UIControlEvents.ValueChanged)
+        fxStepper!.addTarget(self, action: #selector(SynthViewController.changeFX), for: UIControlEvents.valueChanged)
         toolbarView.addSubview(fxStepper!)
         
         // Add Help Button
@@ -134,9 +134,9 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         drumSequencer = UIButton(frame: drumSequencerFrame)
         drumSequencer!.backgroundColor = changeModeButtonColor
         drumSequencer!.layer.cornerRadius = 15
-        drumSequencer!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        drumSequencer!.setTitle("D", forState: UIControlState.Normal)
-        drumSequencer!.addTarget(self, action: #selector(SynthViewController.goToDrumSequencer), forControlEvents: UIControlEvents.TouchUpInside)
+        drumSequencer!.setTitleColor(UIColor.white, for: UIControlState())
+        drumSequencer!.setTitle("D", for: UIControlState())
+        drumSequencer!.addTarget(self, action: #selector(SynthViewController.goToDrumSequencer), for: UIControlEvents.touchUpInside)
         toolbarView.addSubview(drumSequencer!)
         
         // Add Record Button
@@ -145,16 +145,16 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         recordButton = UIButton(frame: recordButtonFrame)
         recordButton!.backgroundColor = recordOffColor
         recordButton!.layer.cornerRadius = 22.5
-        recordButton!.addTarget(self, action: #selector(SynthViewController.toggleRecord), forControlEvents: UIControlEvents.TouchUpInside)
+        recordButton!.addTarget(self, action: #selector(SynthViewController.toggleRecord), for: UIControlEvents.touchUpInside)
         toolbarView.addSubview(recordButton!)
         
         // Add Playback Buttons
         let startPlaybackFrame = CGRect(x: recordButtonFrame.origin.x - 50, y: 5, width: 45, height: 45)
         startPlaybackButton = UIButton(frame: startPlaybackFrame)
         startPlaybackButton!.titleLabel!.adjustsFontSizeToFitWidth = true
-        startPlaybackButton!.setTitle("▶︎", forState: UIControlState.Normal)
+        startPlaybackButton!.setTitle("▶︎", for: UIControlState())
         startPlaybackButton!.titleLabel!.sizeToFit()
-        startPlaybackButton!.addTarget(self, action: #selector(SynthViewController.togglePlayback), forControlEvents: UIControlEvents.TouchUpInside)
+        startPlaybackButton!.addTarget(self, action: #selector(SynthViewController.togglePlayback), for: UIControlEvents.touchUpInside)
         toolbarView.addSubview(startPlaybackButton!)
         
         // Add FX Slider
@@ -167,7 +167,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         fxSlider!.maximumTrackTintColor = fxSliderTintColor
         fxSlider!.minimumTrackTintColor = delayTimeSliderThumbColor
         fxSlider!.thumbTintColor = delayTimeSliderThumbColor
-        fxSlider!.addTarget(self, action: #selector(SynthViewController.fxValueChanged), forControlEvents: UIControlEvents.ValueChanged)
+        fxSlider!.addTarget(self, action: #selector(SynthViewController.fxValueChanged), for: UIControlEvents.valueChanged)
         toolbarView.addSubview(fxSlider!)
         
         audioEngine = AudioEngine(numberOfVoices: numberOfPads, withKey: key, withOctave: Int(octaveStepper!.value))
@@ -175,9 +175,9 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         fxSlider!.value = Float(audioEngine!.delayNode!.delayTime) / 2.0
 
-        if !NSUserDefaults.standardUserDefaults().boolForKey("hasLaunchedSequencer") {
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLaunchedSequencer")
-            NSUserDefaults.standardUserDefaults().synchronize()
+        if !UserDefaults.standard.bool(forKey: "hasLaunchedSequencer") {
+            UserDefaults.standard.set(true, forKey: "hasLaunchedSequencer")
+            UserDefaults.standard.synchronize()
             firstLaunchHelpScreen()
         }
     }
@@ -207,11 +207,11 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     func togglePlayback() {
         if isPlaying {
-            startPlaybackButton!.setTitle("▶︎", forState: UIControlState.Normal)
+            startPlaybackButton!.setTitle("▶︎", for: UIControlState())
             audioEngine!.stopPlayback()
             isPlaying = false
         } else {
-            startPlaybackButton!.setTitle("◼︎", forState: UIControlState.Normal)
+            startPlaybackButton!.setTitle("◼︎", for: UIControlState())
             audioEngine!.startPlayback()
             isPlaying = true
         }
@@ -227,7 +227,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         } else if !isPlaying {
             recordButton!.backgroundColor = recordOnColor
             audioEngine!.startRecording()
-            UIView.animateWithDuration(0.8, delay: 0.25, options: [UIViewAnimationOptions.Repeat, UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.AllowUserInteraction], animations: {
+            UIView.animate(withDuration: 0.8, delay: 0.25, options: [UIViewAnimationOptions.repeat, UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.allowUserInteraction], animations: {
                 self.recordButton!.alpha = 0.6
                 }, completion: nil)
             recording = true
@@ -236,7 +236,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     func addBlurView() -> UIView {
         if !UIAccessibilityIsReduceTransparencyEnabled() {
-            self.view.backgroundColor = UIColor.clearColor()
+            self.view.backgroundColor = UIColor.clear
             blurEffectView.frame = self.view.bounds
             return blurEffectView
         }
@@ -258,14 +258,14 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         }
         
         let maxY = octaveStepper!.frame.maxY + 5
-        octaveChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: 0, y: maxY), size: CGSizeZero))
+        octaveChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: 0, y: maxY), size: CGSize.zero))
         octaveChangeLabel!.text = "octave " + String(audioEngine!.octave)
         octaveChangeLabel!.textColor = octaveStepperColor
         octaveChangeLabel!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         octaveChangeLabel!.sizeToFit()
         view.addSubview(octaveChangeLabel!)
         
-        octaveChangeTimer = NSTimer.scheduledTimerWithTimeInterval(0.7, target: self, selector: #selector(SynthViewController.removeOctaveChangeLabel), userInfo: nil, repeats: false)
+        octaveChangeTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(SynthViewController.removeOctaveChangeLabel), userInfo: nil, repeats: false)
     }
     
     func removeOctaveChangeLabel() {
@@ -283,14 +283,14 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         if octaveChangeLabel != nil && octaveChangeLabel!.frame.maxX > minX {
             minX = octaveChangeLabel!.frame.maxX + 5
         }
-        keyChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: maxY), size: CGSizeZero))
-        keyChangeLabel!.text = "key of " + audioEngine!.key.lowercaseString + " maj"
+        keyChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: maxY), size: CGSize.zero))
+        keyChangeLabel!.text = "key of " + audioEngine!.key.lowercased() + " maj"
         keyChangeLabel!.textColor = keyStepperColor
         keyChangeLabel!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         keyChangeLabel!.sizeToFit()
         view.addSubview(keyChangeLabel!)
         
-        keyChangeTimer = NSTimer.scheduledTimerWithTimeInterval(0.7, target: self, selector: #selector(SynthViewController.removeKeyChangeLabel), userInfo: nil, repeats: false)
+        keyChangeTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(SynthViewController.removeKeyChangeLabel), userInfo: nil, repeats: false)
     }
     
     func removeKeyChangeLabel() {
@@ -308,14 +308,14 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         if keyChangeLabel != nil && keyChangeLabel!.frame.maxX > minX {
             minX = keyChangeLabel!.frame.maxX + 5
         }
-        fxTypeChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: maxY), size: CGSizeZero))
-        fxTypeChangeLabel!.text = "fx is " + audioEngine!.fxType.rawValue.lowercaseString
+        fxTypeChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: maxY), size: CGSize.zero))
+        fxTypeChangeLabel!.text = "fx is " + audioEngine!.fxType.rawValue.lowercased()
         fxTypeChangeLabel!.textColor = fxStepperColor
         fxTypeChangeLabel!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         fxTypeChangeLabel!.sizeToFit()
         view.addSubview(fxTypeChangeLabel!)
         
-        fxTypeChangeTimer = NSTimer.scheduledTimerWithTimeInterval(0.7, target: self, selector: #selector(SynthViewController.removeFXTypeChangeLabel), userInfo: nil, repeats: false)
+        fxTypeChangeTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(SynthViewController.removeFXTypeChangeLabel), userInfo: nil, repeats: false)
     }
     
     func removeFXTypeChangeLabel() {
@@ -326,21 +326,21 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     func firstLaunchHelpScreen() {
         hasRemovedLaunchScreen = false
         let blurView = addBlurView()
-        let mainScreenBounds = UIScreen.mainScreen().bounds
-        let rect = CGRectMake(mainScreenBounds.width / 4, mainScreenBounds.height / 4,  mainScreenBounds.width / 2, mainScreenBounds.height / 2)
+        let mainScreenBounds = UIScreen.main.bounds
+        let rect = CGRect(x: mainScreenBounds.width / 4, y: mainScreenBounds.height / 4,  width: mainScreenBounds.width / 2, height: mainScreenBounds.height / 2)
         instructionLabel = UILabel(frame: rect)
-        instructionLabel!.textAlignment = NSTextAlignment.Center
+        instructionLabel!.textAlignment = NSTextAlignment.center
         instructionLabel!.text = "Turn up your volume and plug into headphones or speakers for the best experience. Check out the sweet drum sequencer mode by pressing the D button on the top right."
         instructionLabel!.textColor = padOffColor
         instructionLabel!.numberOfLines = 0
         blurView.addSubview(instructionLabel!)
         view.insertSubview(blurView, aboveSubview: view)
-        NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: #selector(SynthViewController.removeLaunchViews), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(SynthViewController.removeLaunchViews), userInfo: nil, repeats: false)
     }
     
     func removeLaunchViews() {
-        let lock = dispatch_queue_create("removeLaunchScreen", nil)
-        dispatch_sync(lock, {
+        let lock = DispatchQueue(label: "removeLaunchScreen", attributes: [])
+        lock.sync(execute: {
             if !self.hasRemovedLaunchScreen {
                 self.instructionLabel!.removeFromSuperview()
                 self.removeBlurView()
@@ -352,36 +352,36 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
     func toggleHelpScreen() {
         if !helpMode {
             keyLabel = UILabel(frame: keyStepper!.frame)
-            keyLabel!.textAlignment = NSTextAlignment.Center
-            keyLabel!.text = "key of " + audioEngine!.key.lowercaseString + "maj"
+            keyLabel!.textAlignment = NSTextAlignment.center
+            keyLabel!.text = "key of " + audioEngine!.key.lowercased() + "maj"
             keyLabel!.textColor = keyStepperColor
             octaveLabel = UILabel(frame: octaveStepper!.frame)
-            octaveLabel!.textAlignment = NSTextAlignment.Center
+            octaveLabel!.textAlignment = NSTextAlignment.center
             octaveLabel!.text = "octave " + String(audioEngine!.octave)
             octaveLabel!.textColor = octaveStepperColor
             fxTypeLabel = UILabel(frame: fxStepper!.frame)
-            fxTypeLabel!.text = "fx " + audioEngine!.fxType.rawValue.lowercaseString
+            fxTypeLabel!.text = "fx " + audioEngine!.fxType.rawValue.lowercased()
             fxTypeLabel!.textColor = fxStepperColor
             fxTypeLabel!.sizeToFit()
             if fxTypeLabel!.frame.height != fxStepper!.frame.height {
                 fxTypeLabel!.frame.size.height = fxStepper!.frame.height
             }
-            fxTypeLabel!.textAlignment = NSTextAlignment.Center
+            fxTypeLabel!.textAlignment = NSTextAlignment.center
             var minX = fxSlider!.frame.minX
             if minX > fxSlider!.frame.minX - 5 {
                 minX = fxTypeLabel!.frame.maxX + 5
             }
             let minY = fxSlider!.frame.minY
-            fxValueLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: minY), size: CGSizeZero))
-            fxValueLabel!.textAlignment = NSTextAlignment.Center
+            fxValueLabel = UILabel(frame: CGRect(origin: CGPoint(x: minX, y: minY), size: CGSize.zero))
+            fxValueLabel!.textAlignment = NSTextAlignment.center
             fxValueLabel!.text = "fx value " + (NSString(format: "%.2f", audioEngine!.fxValue) as String)
             fxValueLabel!.textColor = fxSliderThumbColor
             fxValueLabel!.sizeToFit()
             if fxValueLabel!.frame.height != fxSlider!.frame.height {
                 fxValueLabel!.frame.size.height = fxSlider!.frame.height
             }
-            let shakeLabelX = UIScreen.mainScreen().bounds.width / 4
-            let shakeLabelY = UIScreen.mainScreen().bounds.height / 3
+            let shakeLabelX = UIScreen.main.bounds.width / 4
+            let shakeLabelY = UIScreen.main.bounds.height / 3
             shakeInstructionLabel = UILabel(frame: CGRect(origin: CGPoint(x: shakeLabelX, y: shakeLabelY), size: CGSize.zero));
             shakeInstructionLabel!.text = "shake at any time to reset sound"
             shakeInstructionLabel!.textColor = padOffColor
@@ -390,10 +390,10 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
             var counter = 0
             noteLabels = [UILabel]()
             let blurView = addBlurView()
-            drumSequencer!.setTitle("✕", forState: UIControlState.Normal)
+            drumSequencer!.setTitle("✕", for: UIControlState())
             shareButton = UIButton(frame: recordButton!.frame)
-            shareButton!.addTarget(self, action: #selector(SynthViewController.shareRecording), forControlEvents: UIControlEvents.TouchUpInside)
-            shareButton!.setTitle("⇡", forState: UIControlState.Normal)
+            shareButton!.addTarget(self, action: #selector(SynthViewController.shareRecording), for: UIControlEvents.touchUpInside)
+            shareButton!.setTitle("⇡", for: UIControlState())
             shareButton!.backgroundColor = shareButtoncolor
             shareButton!.layer.cornerRadius = recordButton!.layer.cornerRadius
             self.view.addSubview(blurView)
@@ -407,7 +407,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
             noteLabels = [UILabel]()
             for padLabel in padHandler!.padLabels {
                 let noteLabel = UILabel(frame: padLabel.frame)
-                noteLabel.textAlignment = NSTextAlignment.Center
+                noteLabel.textAlignment = NSTextAlignment.center
                 noteLabel.text = audioEngine!.voiceArray.first!.scaleNotes[counter]
                 noteLabel.textColor = padLabel.backgroundColor
                 self.view.insertSubview(noteLabel, aboveSubview: blurView)
@@ -426,7 +426,7 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 noteLabel.removeFromSuperview()
             }
             removeBlurView()
-            drumSequencer!.setTitle("?", forState: UIControlState.Normal)
+            drumSequencer!.setTitle("?", for: UIControlState())
             helpMode = false
         }
     }
@@ -439,21 +439,21 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         let messageVC = MFMessageComposeViewController()
         messageVC.messageComposeDelegate = self
         messageVC.body = "Check out my jam with synthia";
-        messageVC.addAttachmentData(NSData(contentsOfFile: audioEngine!.playbackFileUrl!.path!)!, typeIdentifier: "audio/mp3", filename: "my jam.mp3")
+        messageVC.addAttachmentData(try! Data(contentsOf: URL(fileURLWithPath: audioEngine!.playbackFileUrl!.path)), typeIdentifier: "audio/mp3", filename: "my jam.mp3")
         messageVC.recipients = [""]
         messageVC.messageComposeDelegate = self;
         
-        self.presentViewController(messageVC, animated: true, completion: nil)
+        self.present(messageVC, animated: true, completion: nil)
     }
     
-    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         switch (result) {
-        case MessageComposeResultCancelled:
-            self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultFailed:
-            self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultSent:
-            self.dismissViewControllerAnimated(true, completion: nil)
+        case MessageComposeResult.cancelled:
+            self.dismiss(animated: true, completion: nil)
+        case MessageComposeResult.failed:
+            self.dismiss(animated: true, completion: nil)
+        case MessageComposeResult.sent:
+            self.dismiss(animated: true, completion: nil)
         default:
             break;
         }
@@ -504,40 +504,40 @@ class SynthViewController: UIViewController, MFMessageComposeViewControllerDeleg
         displayFXTypeChangeLabel()
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !self.hasRemovedLaunchScreen {
             self.removeBlurView()
             self.hasRemovedLaunchScreen = true
             return
         }
-        let touchesInNoteLabelsContainer = event!.touchesForView(noteLabelsContainer!)
+        let touchesInNoteLabelsContainer = event!.touches(for: noteLabelsContainer!)
         if touchesInNoteLabelsContainer != nil {
             padHandler!.processTouchesBegan(touches)
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touchesInNoteLabelsContainer = event!.touchesForView(noteLabelsContainer!)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchesInNoteLabelsContainer = event!.touches(for: noteLabelsContainer!)
         if touchesInNoteLabelsContainer != nil {
             padHandler!.processTouchesMoved(touches)
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touchesInNoteLabelsContainer = event!.touchesForView(noteLabelsContainer!)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchesInNoteLabelsContainer = event!.touches(for: noteLabelsContainer!)
         if touchesInNoteLabelsContainer != nil {
             padHandler!.processTouchesEnded(touches)
         }
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        let touchesInNoteLabelsContainer = event!.touchesForView(noteLabelsContainer!)
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchesInNoteLabelsContainer = event!.touches(for: noteLabelsContainer!)
         if touchesInNoteLabelsContainer != nil {
-            padHandler!.processTouchesEnded(touches!)
+            padHandler!.processTouchesEnded(touches)
         }
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
 }

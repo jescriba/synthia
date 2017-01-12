@@ -27,7 +27,7 @@ class AudioEngine {
     var eqNode: AVAudioUnitEQ?
     var distortionNode: AVAudioUnitDistortion?
     var playbackOutputFile: AVAudioFile?
-    var playbackFileUrl: NSURL?
+    var playbackFileUrl: URL?
 
     // 0 stoped 1 paused 2 playing
     var playbackStatus = 0
@@ -41,7 +41,7 @@ class AudioEngine {
         let numOfRowsForDrums = 4
         for i in 0...(numOfRowsForDrums - 1) {
             let drumSample = DrumSample(sampleIndex: i)
-            engine.attachNode(drumSample.playerNode)
+            engine.attach(drumSample.playerNode)
             engine.connect(drumSample.playerNode, to: engine.mainMixerNode, format: audioFormat)
             drumArray.append(drumSample)
         }
@@ -64,11 +64,11 @@ class AudioEngine {
     
     init (numberOfVoices: Int, withKey: String, withOctave: Int) {
         playbackFileUrl = nil
-        engine.attachNode(dryMasterMixerNode)
+        engine.attach(dryMasterMixerNode)
         for _ in 0...(numberOfVoices - 1) {
             let voice = Voice(withKey: withKey, withOctave: withOctave)
             voiceArray.append(voice)
-            engine.attachNode(voice.oscNode)
+            engine.attach(voice.oscNode)
             engine.connect(voice.oscNode, to: dryMasterMixerNode, format: audioFormat)
         }
         delayNode = AVAudioUnitDelay()
@@ -79,7 +79,7 @@ class AudioEngine {
         reverbNode!.bypass = false
         reverbNode!.wetDryMix = 20
         eqNode = AVAudioUnitEQ(numberOfBands: 1)
-        eqNode!.bands.first!.filterType = AVAudioUnitEQFilterType.LowPass
+        eqNode!.bands.first!.filterType = AVAudioUnitEQFilterType.lowPass
         eqNode!.bands.first!.frequency = 800
         eqNode!.bands.first!.bypass = false
         eqNode!.globalGain = 0
@@ -87,11 +87,11 @@ class AudioEngine {
         distortionNode = AVAudioUnitDistortion()
         distortionNode!.bypass = false
         distortionNode!.wetDryMix = 0
-        engine.attachNode(delayNode!)
-        engine.attachNode(reverbNode!)
-        engine.attachNode(eqNode!)
-        engine.attachNode(distortionNode!)
-        engine.attachNode(playbackFilePlayer)
+        engine.attach(delayNode!)
+        engine.attach(reverbNode!)
+        engine.attach(eqNode!)
+        engine.attach(distortionNode!)
+        engine.attach(playbackFilePlayer)
         engine.connect(dryMasterMixerNode, to: delayNode!, format: audioFormat)
         engine.connect(delayNode!, to: reverbNode!, format: audioFormat)
         engine.connect(reverbNode!, to: eqNode!, format: audioFormat)
@@ -115,14 +115,14 @@ class AudioEngine {
         }
     }
     
-    func changeOctave(octave: Int) {
+    func changeOctave(_ octave: Int) {
         self.octave = octave
         for voice in voiceArray {
             voice.octave = octave
         }
     }
     
-    func changeKey(key: String) {
+    func changeKey(_ key: String) {
         self.key = key
         for voice in voiceArray {
             voice.changeKey(key)
@@ -130,12 +130,12 @@ class AudioEngine {
     }
     
     // Refactor this to use custom setter same for the above
-    func changeFXValue(newFXValue: Float) {
+    func changeFXValue(_ newFXValue: Float) {
         var convertedFXValue = Float(0)
         switch fxType {
         case FXType.DelayTime:
             convertedFXValue = newFXValue * Float(2)
-            delayNode!.delayTime = NSTimeInterval(convertedFXValue)
+            delayNode!.delayTime = TimeInterval(convertedFXValue)
         case FXType.DelayWetness:
             convertedFXValue = newFXValue * Float(100)
             delayNode!.wetDryMix = convertedFXValue
@@ -182,26 +182,26 @@ class AudioEngine {
             recording = true
             
             if playbackFileUrl == nil {
-                playbackFileUrl = NSURL(string: NSTemporaryDirectory() + "playbackOutput.caf")
+                playbackFileUrl = URL(string: NSTemporaryDirectory() + "playbackOutput.caf")
             }
             
             let mainMixer = engine.mainMixerNode
             do {
-                self.playbackOutputFile = try AVAudioFile(forWriting: playbackFileUrl!, settings: mainMixer.outputFormatForBus(0).settings)
+                self.playbackOutputFile = try AVAudioFile(forWriting: playbackFileUrl!, settings: mainMixer.outputFormat(forBus: 0).settings)
             } catch {
                 print("Playback set up error")
             }
             
-            if !engine.running {
+            if !engine.isRunning {
                 do {
                     try engine.start()
                 } catch {
                     print("Engine crashed")
                 }
             }
-            mainMixer.installTapOnBus(0, bufferSize: 1024, format: audioFormat, block: { (buffer: AVAudioPCMBuffer, when: AVAudioTime) -> Void in
+            mainMixer.installTap(onBus: 0, bufferSize: 1024, format: audioFormat, block: { (buffer: AVAudioPCMBuffer, when: AVAudioTime) -> Void in
                 do {
-                    try self.playbackOutputFile!.writeFromBuffer(buffer)
+                    try self.playbackOutputFile!.write(from: buffer)
                 } catch {
                     print("Error writing buffer")
                 }
@@ -211,13 +211,13 @@ class AudioEngine {
     
     func stopRecording() {
         if recording {
-            engine.mainMixerNode.removeTapOnBus(0)
+            engine.mainMixerNode.removeTap(onBus: 0)
             recording = false
         }
     }
     
     func startPlayback() {
-        if !engine.running {
+        if !engine.isRunning {
             do {
                 try engine.start()
             } catch {
@@ -237,10 +237,10 @@ class AudioEngine {
                     print("Recorded File error")
                 }
                 
-                playbackFilePlayer.scheduleFile(recordedFile!, atTime: nil, completionHandler: { () -> Void in
-                    let playerTime = self.playbackFilePlayer.playerTimeForNodeTime(self.playbackFilePlayer.lastRenderTime!)
+                playbackFilePlayer.scheduleFile(recordedFile!, at: nil, completionHandler: { () -> Void in
+                    let playerTime = self.playbackFilePlayer.playerTime(forNodeTime: self.playbackFilePlayer.lastRenderTime!)
                     let delaySeconds = Double(recordedFile!.length - playerTime!.sampleTime) / recordedFile!.processingFormat.sampleRate
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delaySeconds) * Int64(NSEC_PER_SEC)), dispatch_get_main_queue(), {
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delaySeconds) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
                         if self.playbackStatus == 0 {
                             self.playbackFilePlayer.stop()
                         } else if self.playbackStatus == 1 {
@@ -266,7 +266,7 @@ class AudioEngine {
         playbackStatus = 0
     }
     
-    func triggerDrumSamplesForIndices(indices: [Int]) {
+    func triggerDrumSamplesForIndices(_ indices: [Int]) {
         // TODO:
         //
         for index in indices {

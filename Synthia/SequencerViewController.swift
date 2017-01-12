@@ -15,8 +15,8 @@ let drumBtnOnPlayingColor = UIColor(red: 0.64, green: 1, blue: 0.90, alpha: 1)
 class SequencerViewController : UIViewController {
     weak var delegate: ContainerController?
 
-    let screenWidth = UIScreen.mainScreen().bounds.width
-    let screenHeight = UIScreen.mainScreen().bounds.height
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
     var audioEngine: AudioEngine?
     var toolbarView: UIView?
     var startPlaybackButton: UIButton?
@@ -24,7 +24,7 @@ class SequencerViewController : UIViewController {
     var columnStepper: UIStepper?
     var presetStepper: UIStepper?
     var presetChangeLabel: UILabel?
-    var presetChangeTimer: NSTimer?
+    var presetChangeTimer: Timer?
     var isPlaying = false
     var bpm = 120
     var playIndex = 0
@@ -52,7 +52,7 @@ class SequencerViewController : UIViewController {
         columnStepper!.wraps = true
         columnStepper!.backgroundColor = octaveStepperBgColor
         columnStepper!.tintColor = octaveStepperColor
-        columnStepper!.addTarget(self, action: #selector(SequencerViewController.changeColumns), forControlEvents: UIControlEvents.TouchUpInside)
+        columnStepper!.addTarget(self, action: #selector(SequencerViewController.changeColumns), for: UIControlEvents.touchUpInside)
         toolbarView!.addSubview(columnStepper!)
         
         // Add Preset Stepper
@@ -65,26 +65,26 @@ class SequencerViewController : UIViewController {
         presetStepper!.wraps = true
         presetStepper!.backgroundColor = octaveStepperBgColor
         presetStepper!.tintColor = octaveStepperColor
-        presetStepper!.addTarget(self, action: #selector(SequencerViewController.changePreset), forControlEvents: UIControlEvents.TouchUpInside)
+        presetStepper!.addTarget(self, action: #selector(SequencerViewController.changePreset), for: UIControlEvents.touchUpInside)
         toolbarView!.addSubview(presetStepper!)
         
         // SynthButton Temporarily
         let synthBtnFrame = CGRect(x: screenWidth - 47, y: 5, width: 45, height: 45)
         let synthButton = UIButton(frame: synthBtnFrame)
         synthButton.backgroundColor = changeModeButtonColor
-        synthButton.setTitle("S", forState: UIControlState.Normal)
-        synthButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        synthButton.setTitle("S", for: UIControlState())
+        synthButton.setTitleColor(UIColor.white, for: UIControlState())
         synthButton.layer.cornerRadius = 15
-        synthButton.addTarget(self, action: #selector(SequencerViewController.goToSynth), forControlEvents: UIControlEvents.TouchUpInside)
+        synthButton.addTarget(self, action: #selector(SequencerViewController.goToSynth), for: UIControlEvents.touchUpInside)
         toolbarView!.addSubview(synthButton)
         
         // Add Playback Buttons
         let startPlaybackFrame = CGRect(x: synthBtnFrame.minX - 47, y: 5, width: 45, height: 45)
         startPlaybackButton = UIButton(frame: startPlaybackFrame)
         startPlaybackButton!.titleLabel!.adjustsFontSizeToFitWidth = true
-        startPlaybackButton!.setTitle("▶︎", forState: UIControlState.Normal)
+        startPlaybackButton!.setTitle("▶︎", for: UIControlState())
         startPlaybackButton!.titleLabel!.sizeToFit()
-        startPlaybackButton!.addTarget(self, action: #selector(SequencerViewController.togglePlayback), forControlEvents: UIControlEvents.TouchUpInside)
+        startPlaybackButton!.addTarget(self, action: #selector(SequencerViewController.togglePlayback), for: UIControlEvents.touchUpInside)
         toolbarView!.addSubview(startPlaybackButton!)
         
         // Add bpm slider
@@ -96,7 +96,7 @@ class SequencerViewController : UIViewController {
         bpmSlider!.minimumValue = 0
         bpmSlider!.maximumValue = 170
         bpmSlider!.value = 84
-        bpmSlider!.addTarget(self, action: #selector(SequencerViewController.changeBpm), forControlEvents: UIControlEvents.ValueChanged)
+        bpmSlider!.addTarget(self, action: #selector(SequencerViewController.changeBpm), for: UIControlEvents.valueChanged)
         toolbarView!.addSubview(bpmSlider!)
         calculateGrid()
         
@@ -120,9 +120,9 @@ class SequencerViewController : UIViewController {
                 let btn = UIButton(frame: CGRect(x: x, y: y, width: drumBtnWidth, height: drumBtnHeight))
                 btn.backgroundColor = padOffColor
                 btn.layer.borderWidth = 0.5
-                btn.layer.borderColor = btnBorderColor.CGColor
+                btn.layer.borderColor = btnBorderColor.cgColor
                 btn.tag = row * numberOfColumns + col
-                btn.addTarget(self, action: #selector(SequencerViewController.toggleDrumBtn(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                btn.addTarget(self, action: #selector(SequencerViewController.toggleDrumBtn(_:)), for: UIControlEvents.touchUpInside)
                 view.addSubview(btn)
                 columnArray.append(btn)
             }
@@ -149,14 +149,14 @@ class SequencerViewController : UIViewController {
         }
         
         let maxY = presetStepper!.frame.maxY + 5
-        presetChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: presetStepper!.frame.minX, y: maxY), size: CGSizeZero))
+        presetChangeLabel = UILabel(frame: CGRect(origin: CGPoint(x: presetStepper!.frame.minX, y: maxY), size: CGSize.zero))
         presetChangeLabel!.text = "Preset pack " + String(Int(presetStepper!.value))
         presetChangeLabel!.textColor = octaveStepperColor
         presetChangeLabel!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         presetChangeLabel!.sizeToFit()
         view.addSubview(presetChangeLabel!)
         
-        presetChangeTimer = NSTimer.scheduledTimerWithTimeInterval(0.7, target: self, selector: #selector(SequencerViewController.removePresetChangeLabel), userInfo: nil, repeats: false)
+        presetChangeTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(SequencerViewController.removePresetChangeLabel), userInfo: nil, repeats: false)
     }
     
     func removePresetChangeLabel() {
@@ -179,7 +179,7 @@ class SequencerViewController : UIViewController {
         delegate?.pageWantsPageChange()
     }
     
-    func toggleDrumBtn(sender: UIButton) {
+    func toggleDrumBtn(_ sender: UIButton) {
         let row = Int(sender.tag / numberOfColumns)
         let col = sender.tag - row * numberOfColumns
         if drumButtons[row][col].backgroundColor == drumBtnOnColor {
@@ -192,16 +192,16 @@ class SequencerViewController : UIViewController {
     }
     
     func startPlayback() {
-        startPlaybackButton!.setTitle("◼︎", forState: UIControlState.Normal)
+        startPlaybackButton!.setTitle("◼︎", for: UIControlState())
         isPlaying = true
         playStep()
     }
     
     func stopPlayback() {
-        startPlaybackButton!.setTitle("▶︎", forState: UIControlState.Normal)
+        startPlaybackButton!.setTitle("▶︎", for: UIControlState())
         //audioEngine!.stopPlayback()
         for drum in audioEngine!.drumArray {
-            if drum.playerNode.playing {
+            if drum.playerNode.isPlaying {
                 drum.playerNode.stop()
             }
         }
@@ -222,12 +222,12 @@ class SequencerViewController : UIViewController {
             let indicesToPlay = getIndicesToPlayAndHighlightColumn(playIndex)
             audioEngine!.triggerDrumSamplesForIndices(indicesToPlay)
             playIndex += 1
-            let timeInterval = NSTimeInterval(Float(240) / Float(numberOfColumns * bpm))
-            NSTimer.scheduledTimerWithTimeInterval(timeInterval, target: self, selector: #selector(SequencerViewController.playStep), userInfo: nil, repeats: false)
+            let timeInterval = TimeInterval(Float(240) / Float(numberOfColumns * bpm))
+            Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(SequencerViewController.playStep), userInfo: nil, repeats: false)
         }
     }
     
-    func getIndicesToPlayAndHighlightColumn(index: Int) -> [Int] {
+    func getIndicesToPlayAndHighlightColumn(_ index: Int) -> [Int] {
         var indicesToPlay = [Int]()
         var row = 0
         for colBtn in self.drumButtons {
@@ -255,7 +255,7 @@ class SequencerViewController : UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
 }

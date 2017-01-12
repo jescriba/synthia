@@ -17,8 +17,8 @@ class Voice {
     let mixNode = AVAudioMixerNode()
     let audioFormat = AVAudioFormat(standardFormatWithSampleRate: 44100.0, channels: 2)
     var audioBuffers = [AVAudioPCMBuffer]()
-    let audioQueue = dispatch_queue_create("SynthQueue", DISPATCH_QUEUE_SERIAL)
-    let audioSempahore = dispatch_semaphore_create(2)
+    let audioQueue = DispatchQueue(label: "SynthQueue", attributes: [])
+    let audioSempahore = DispatchSemaphore(value: 2)
     let samplesPerBuffer = AVAudioFrameCount(1024)
     var octave: Int?
     let baseFrequencies = ["C": 16.35, "C#": 17.32, "D": 18.35, "D#": 19.45, "E": 20.60, "F": 21.83, "F#":23.12, "G": 24.50, "G#": 25.96, "A": 27.50, "A#": 29.14, "B": 30.87]
@@ -35,12 +35,12 @@ class Voice {
         octave = withOctave
         computeScaleBaseFrequenciesForKey(withKey)
         for _ in 0...1 {
-            let audioBuffer = AVAudioPCMBuffer(PCMFormat: audioFormat, frameCapacity: samplesPerBuffer)
+            let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: samplesPerBuffer)
             audioBuffers.append(audioBuffer)
         }
     }
     
-    func start(padIndex: Int) {
+    func start(_ padIndex: Int) {
         noteIndex = padIndex
                 
         if !playing {
@@ -52,7 +52,7 @@ class Voice {
     
     func startNote() {
         let unitVelocity = 2.0 * M_PI / audioFormat.sampleRate
-        dispatch_async(audioQueue) {
+        audioQueue.async {
             var sampleTime = 0
             var previousKey = self.key
             while (true) {
@@ -60,7 +60,7 @@ class Voice {
                     self.computeScaleBaseFrequenciesForKey(self.key!)
                     previousKey = self.key
                 }
-                dispatch_semaphore_wait(self.audioSempahore, DISPATCH_TIME_FOREVER)
+                self.audioSempahore.wait(timeout: DispatchTime.distantFuture)
                 let targetFrequency = Float32(Double(self.octave!) * self.scaleBaseFrequencies![self.noteIndex!])
                 let audioBuffer = self.audioBuffers[self.bufferIndex]
                 for i in 0...Int(self.samplesPerBuffer - 1) {
@@ -87,13 +87,13 @@ class Voice {
                     sample = self.squareWaveRatio * squareSample + self.triangleWaveRatio * triangleSample + self.sineWaveRatio * sineSample
                     
                     
-                    audioBuffer.floatChannelData[0][i] = sample
-                    audioBuffer.floatChannelData[1][i] = sample
+                    audioBuffer.floatChannelData?[0][i] = sample
+                    audioBuffer.floatChannelData?[1][i] = sample
                     sampleTime += 1
                 }
                 audioBuffer.frameLength = self.samplesPerBuffer
                 self.oscNode.scheduleBuffer(audioBuffer, completionHandler: { () -> Void in
-                    dispatch_semaphore_signal(self.audioSempahore)
+                    self.audioSempahore.signal()
                     return
                 })
                 self.bufferIndex = (self.bufferIndex + 1) % self.audioBuffers.count
@@ -102,18 +102,18 @@ class Voice {
     }
     
     func stop() {
-        if oscNode.playing {
+        if oscNode.isPlaying {
             oscNode.stop()
         }
     }
     
-    func changeKey(newKey: String) {
+    func changeKey(_ newKey: String) {
         key = newKey
         computeScaleBaseFrequenciesForKey(newKey)
     }
     
     // location is a float 0-1 representing the top to bottom of the pad
-    func calculateWaveRatios(location: Float) {
+    func calculateWaveRatios(_ location: Float) {
         
         if location > 0.5 {
             triangleWaveRatio = (1 - location) + 0.5
@@ -126,14 +126,14 @@ class Voice {
         }
     }
     
-    func computeScaleBaseFrequenciesForKey(withKey: String) {
+    func computeScaleBaseFrequenciesForKey(_ withKey: String) {
         scaleBaseFrequencies = [Double]()
         scaleBaseFrequencies!.append(baseFrequencies[withKey]!)
         scaleNotes.removeAll()
         scaleNotes.append(withKey)
         let previousNote = withKey
         var noteIndex = 0
-        var previousNoteIndex = possibleNotes.indexOf(previousNote)
+        var previousNoteIndex = possibleNotes.index(of: previousNote)
         
         // Calculate Major Scale
         for i in 0...(numberOfPads - 2) {
